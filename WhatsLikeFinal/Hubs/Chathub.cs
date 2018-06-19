@@ -22,13 +22,11 @@ namespace WhatsLikeFinal.Hubs
             if (ConnectedUsers.Count(x => x.ConnectionId == connectionId) == 0)
             {
                 ConnectedUsers.Add(new User { ConnectionId = connectionId, UserName = userEmail });
+
+                List<User> listCont = userRepo.GetContatosByIdUser(idUser);
                 
-                // send to caller
-                Clients.Caller.onConnected(connectionId, userEmail, userRepo.GetContatosByIdUser(idUser));
-
-                // send to all except caller client
-                Clients.AllExcept(connectionId).onNewUserConnected(connectionId, userEmail);
-
+                //Chama função de logon do usuario
+                Clients.Caller.onConnected(connectionId, userEmail, listCont);                
             }
 
         }
@@ -42,7 +40,33 @@ namespace WhatsLikeFinal.Hubs
             Clients.All.messageReceived(userName, message);
         }
 
-        public void SendMessageToConversa(string toUserId, string message)
+        public void SendMessageToContato(int idUser, int idConversa, string message)
+        {
+            //Armazena a mensagem
+            Messages men = new Messages() {
+                IdConversa = idConversa,
+                IdSender = idUser,
+                Lida = 0,
+                Entregue = 1,
+                Mensagem = message
+            };
+
+            userRepo.AddMessageInBD(men);
+
+            //string fromUserId = Context.ConnectionId;
+
+            //var toUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == toUserId);
+            //var fromUser = ConnectedUsers.FirstOrDefault(x => x.ConnectionId == fromUserId);
+
+            // send to 
+            //Clients.Client(toUserId).sendPrivateMessage(fromUserId, fromUser.UserName, message);
+
+            // send to caller user
+            Clients.Caller.sendPrivateMessage(idUser, message);
+          
+        }
+
+        public void SendMessageToPrivate(string toUserId, string message)
         {
 
             string fromUserId = Context.ConnectionId;
@@ -85,15 +109,16 @@ namespace WhatsLikeFinal.Hubs
         //}
 
         public void AddContato(string email, int idUser) {
-            int idConversa = userRepo.AddContato(email,idUser);
+            userRepo.AddContato(email,idUser);
             User u = userRepo.GetUserByEmail(email);
-            Clients.Caller.addContatoLista(u.IdUser,u.UserName,idConversa);
+            Clients.Caller.addContatoLista(u.UserName,u.IdUser);
         }
 
-        private void GetMessagesByConversa(int idUser, int idCont, int idConversa)
+        public void GetMessagesByConversa(int idUser, int idCont)
         {
+            int idConversa = userRepo.GetIdConversaByUserContato(idUser, idCont);
             List<Messages> mensagens = userRepo.GetMessagesByConversa(idConversa);
-            Clients.Caller.AddMessagesConversa(mensagens);
+            Clients.Caller.addMessagesConversa(mensagens, idConversa);
         }
     }
 }

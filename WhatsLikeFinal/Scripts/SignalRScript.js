@@ -7,7 +7,7 @@
 
     // Start Hub
     $.connection.hub.start().done(function () {
-        registerEvents(chatHub)
+        registerEvents(chatHub);
     });
 
 });
@@ -22,9 +22,11 @@ function registerEvents(chatHub) {
     $('#btnSendMsg').click(function () {
 
         var msg = $("#txtMessage").val();
-        if (msg.length > 0) {
+        var idConversa = $('#hdIdConversaAtual').val();
+        if (msg.length > 0 && idConversa != "") {
             var userName = $('#hdUserName').val();
-            chatHub.server.sendMessageToAll(userName, msg);
+            alert("FOIIIII");
+            chatHub.server.sendMessageToContato(userName, msg);
             $("#txtMessage").val('');
         }
     });
@@ -45,6 +47,12 @@ function registerEvents(chatHub) {
             $("#emailContato").val('');
         }
     });
+
+    $("#divusers").on("click", "a", function () {
+        var idCont = $(this).find("input[type='hidden']").attr('id');
+        var idUser = $('#hdId').val();
+        chatHub.server.getMessagesByConversa(idUser, idCont);
+    });
 }
 
 function registerClientMethods(chatHub) {
@@ -56,7 +64,7 @@ function registerClientMethods(chatHub) {
 
         // Add Contatos na lista de contatos
         for (i = 0; i < userContatos.length; i++) {
-            PutContato(chatHub, userContatos[i].ConnectionId, userContatos[i].UserName);
+            PutContato(chatHub, userContatos[i].UserName, userContatos[i].IdUser);
         }
     }
 
@@ -108,59 +116,31 @@ function registerClientMethods(chatHub) {
 
     chatHub.client.sendMessageToContato = function (fromUserName, message) {
 
-        var ctrId = 'private_' + windowId;
-
-
-        if ($('#' + ctrId).length == 0) {
-
-            createPrivateChatWindow(chatHub, windowId, ctrId, fromUserName);
-
-        }
-
-        $('#' + ctrId).find('#divMessage').append('<div class="message"><span class="userName">' + fromUserName + '</span>: ' + message + '</div>');
-
-        // set scrollbar
-        var height = $('#' + ctrId).find('#divMessage')[0].scrollHeight;
-        $('#' + ctrId).find('#divMessage').scrollTop(height);
-
     }
 
     chatHub.client.sendMessageToGrupo = function (windowId, fromUserName, message) {
-
-        var ctrId = 'private_' + windowId;
-
-
-        if ($('#' + ctrId).length == 0) {
-
-            createPrivateChatWindow(chatHub, windowId, ctrId, fromUserName);
-
-        }
-
-        $('#' + ctrId).find('#divMessage').append('<div class="message"><span class="userName">' + fromUserName + '</span>: ' + message + '</div>');
-
-        // set scrollbar
-        var height = $('#' + ctrId).find('#divMessage')[0].scrollHeight;
-        $('#' + ctrId).find('#divMessage').scrollTop(height);
-
+        
     }
 
-    chatHub.client.addContatoLista = function (id,nome,idConversa) {
-        PutContato(chatHub, id, nome, idConversa);
+    //Função que adiciona usuario na lista de contatos 
+    chatHub.client.addContatoLista = function (nome,idConversa) {
+        PutContato(chatHub, nome, idConversa);
+    }
+
+    //Função chamada pelo server que passa um array de mensagens de uma conversa 
+    chatHub.client.addMessagesConversa = function (mensagens, idConversa) {
+        $('#divChatWindow').html("");
+        $('#hdIdConversaAtual').val(idConversa);
+        //Adiciona as mensagens na div
+        for (i = 0; i < mensagens.length; i++) {
+            AddMessage(mensagens[i].UserName, mensagens[i].Mensagem);
+        }
     }
 }
 
-function PutContato(chatHub, id, name, idConversa) {
+function PutContato(chatHub, name, idCont) {
 
-    var code = $('<a id="' + id + '" class="user" >' + name + '<a>');
-
-    $(code).dblclick(function () {
-
-        var id = $(this).attr('id');
-
-        GetMessagesByUsersConversas(chatHub, id, idConversa);
-
-    });
-    
+    var code = $('<a href="#" id="ContConversa" class="list-group-item">' + name + '<input type="hidden" id="' + idCont + '" ></a>');
     $("#divusers").append(code);
 }
 
@@ -192,24 +172,10 @@ function AddUser(chatHub, id, name) {
 
 }
 
+//Função que adiciona mensagem na div do chat
 function AddMessage(userName, message) {
-    $('#divChatWindow').append('<div class="message"><span class="userName">' + userName + '</span>: ' + message + '</div>');
-
+    $('#divChatWindow').append('<li class="other"><div class="msg"><div class="user">' + userName + '</div><p>' + message + '</p></div></li>');
+    
     var height = $('#divChatWindow')[0].scrollHeight;
     $('#divChatWindow').scrollTop(height);
-}
-
-function GetMessagesByUsersConversas(chatHub, idCont, idConversa) {
-    var idUser = $("#hdId").val();
-    chatHub.server.GetMessagesByUsersConversa(idUser, idCont, idConversa);
-}
-
-function AddMessagesConversa(mensagens) {
-
-    $('#divChatWindow').html("");
-
-    //Adiciona as mensagens na div
-    for (i = 0; i < mensagens.length; i++) {
-        AddMessage(mensagens[i].UserName, mensagens[i].Mensagem);
-    }
 }

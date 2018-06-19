@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Bem-vindo "+ @ViewBag.User.UserName;
+    ViewBag.Title = "Bem-vindo " + @ViewBag.User.UserName;
 }
 
-<div class="panel panel-default chatRoom">
+@*<div class="panel panel-default chatRoom">
     <div class="panel-heading">Usuário : @ViewBag.User.UserName</div>
     <div class="panel-body">
         <div class="content">
@@ -20,17 +20,221 @@
 
 <div>
     <label for="Email" class="sr-only">AddContato</label>
-    <input type="email" id="emailContato" name="emailContato" class="form-control" placeholder="Email Contato" required="">    
+    <input type="email" id="emailContato" name="emailContato" class="form-control" placeholder="Email Contato" required="">
     <button class="btn btn-lg btn-primary btn-block" type="submit" id="addCont">AddContato</button>
+</div>*@
+
+<div class="container">
+    <div class="header">
+        <div class="header-content">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a data-toggle="modal" href="#editProfile">Perfil</a></li>
+                    <li><a data-toggle="modal" href="#contactList">Lista de Contatos</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a data-toggle="modal" href="#addContact">Adicionar Contato</a></li>
+                    <li><a data-toggle="modal" href="#addGroup">Criar Grupo</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <ul class="">
+        <li><a data-toggle="modal" href="#editProfile">Perfil</a></li>
+        <li><a data-toggle="modal" href="#contactList">Lista de Contatos</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a data-toggle="modal" href="#addContact">Adicionar Contato</a></li>
+        <li><a data-toggle="modal" href="#addGroup">Criar Grupo</a></li>
+    </ul>
+    <div class="left">
+        <div id="divusers" class="scroll-style list-group">
+            @*<a href="#" class="list-group-item active">Cras justo odio</a>*@
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="scroll-style chat-container">
+            <ol id="divChatWindow" class="chat">
+                @*<li class="other">
+                        <div class="msg">
+                            <div class="user">User</div>
+                            <p>Hola!</p>
+                            <p>Te vienes a cenar al centro?</p>
+                            <time>20:17</time>
+                        </div>
+                    </li>
+                    <li class="self read">
+                        <div class="msg">
+                            <div class="user">Me</div>
+                            <p>Puff...</p>
+                            <p>Aún estoy haciendo el contexto de Góngora...</p>
+                            <p>Mejor otro día</p>
+                            <time>20:18</time>
+                        </div>
+                    </li>*@
+            </ol>
+        </div>
+
+        <div id="message-text">
+            <div class="input-group">
+                <input type="text" id="txtMessage" class="textarea form-control" placeholder="Escreva sua mensagem...">
+                <span class="input-group-btn">
+                    <button id="btnSendMsg" class="send btn btn-default" type="button">Enviar</button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Profile -->
+    <div class="modal fade" id="editProfile" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>Editar Perfil</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="name"><span class="glyphicon glyphicon-user"></span> Nome</label>
+                            <input type="text" class="form-control" id="usrname" placeholder="Digite seu nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname"><span class="glyphicon glyphicon-star-empty"></span> Nickname</label>
+                            <input type="text" class="form-control" id="usrname" placeholder="Digite seu nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Senha</label>
+                            <input type="text" class="form-control" id="psw" placeholder="Digite sua senha">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><span class="glyphicon glyphicon-envelope"></span> Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" disabled>
+                        </div>
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> Erro ao salvar informações.
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Sucesso! </strong> Informações salvas.
+                        </div>
+                        <button type="submit" class="save btn btn-default btn-block"> Salvar </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Contact List-->
+    <div class="modal fade" id="contactList" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>Lista de Contatos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="scroll-style list-group">
+                        <ol>
+                            <li class="list-group-item">Contact 1</li>
+                            <li class="list-group-item">Contact 2</li>
+                            <li class="list-group-item">Contact 3</li>
+                            <li class="list-group-item">Contact 4</li>
+                            <li class="list-group-item">Contact 5</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Add Contact-->
+    <div class="modal fade" id="addContact" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>Adicionar Contato</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><span class="glyphicon glyphicon-envelope"></span> Email</label>
+                            <input type="email" class="form-control" id="emailContato">
+                        </div>
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> O usuário não está cadastrado.
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Sucesso! </strong> Contato adicionado.
+                        </div>
+                        <button type="submit" class="save btn btn-default btn-block" id="addCont"> Adicionar </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Contact List-->
+    <div class="modal fade" id="addGroup" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4>Criar Grupo</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="scroll-style list-group">
+                            <div class="checkbox list-group-item">
+                                <label><input type="checkbox" value="">Contact 1</label>
+                            </div>
+                            <div class="checkbox list-group-item">
+                                <label><input type="checkbox" value="">Contact 2</label>
+                            </div>
+                            <div class="checkbox list-group-item">
+                                <label><input type="checkbox" value="">Contact 3</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> Erro ao criar grupo.
+                        </div>
+                        <div class="alert alert-success">
+                            <strong>Sucesso! </strong> Grupo criado.
+                        </div>
+                        <button type="submit" class="save btn btn-default btn-block"> Criar </button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<input id="hdConnectionId" type="hidden"/>
+<input id="hdConnectionId" type="hidden" />
 <input id="hdId" type="hidden" value="@ViewBag.User.IdUser" />
-<input id="hdUserName" type="hidden" value="@ViewBag.User.UserName"/>
+<input id="hdUserName" type="hidden" value="@ViewBag.User.UserName" />
 <input id="hdEmail" type="hidden" value="@ViewBag.User.Email" />
+<input id="hdIdConversaAtual" type="hidden" />
 
 @section scripts {
     <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
-    <script src="~/signalr/hubs"></script>  
+    <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/SignalRScript.js"></script>
 }

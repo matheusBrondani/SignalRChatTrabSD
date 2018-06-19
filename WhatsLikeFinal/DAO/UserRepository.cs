@@ -33,7 +33,7 @@ namespace WhatsLikeFinal.DAO
         }
 
         // Add Contato para o usuario
-        public int AddContato(string email, int idUser) {
+        public void AddContato(string email, int idUser) {
             using (SignalRBDEntities db = new SignalRBDEntities())
             {
                 User u = GetUserByEmail(email);
@@ -63,8 +63,6 @@ namespace WhatsLikeFinal.DAO
 
                 db.Database.ExecuteSqlCommand("INSERT INTO INTEGRANTES(id_usu, id_conversa) VALUES(@idUser, @id_conversa)", new SqlParameter("@idUser", idUser), new SqlParameter("@id_conversa", conversa.id_conversa));
                 db.Database.ExecuteSqlCommand("INSERT INTO INTEGRANTES(id_usu, id_conversa) VALUES(@idUser, @id_conversa)", new SqlParameter("@idUser", u.IdUser), new SqlParameter("@id_conversa", conversa.id_conversa));
-
-                return conversa.id_conversa;
             }
         }
 
@@ -105,7 +103,16 @@ namespace WhatsLikeFinal.DAO
             }
         }
 
-        public void AddMessage(Messages mensagem){
+        public int GetIdConversaByUserContato(int idUser, int idCont) {
+            using (SignalRBDEntities db = new SignalRBDEntities())
+            {
+               var a = db.Database.SqlQuery<int>("Select i.id_conversa from INTEGRANTES as i join CONVERSAS as c on i.id_conversa = c.id_conversa join USUARIO as u on i.id_usu = u.id_usuario where i.id_usu = @idUser and i.id_conversa IN ( Select i.id_conversa from INTEGRANTES as i join CONVERSAS as c on i.id_conversa = c.id_conversa join USUARIO as u on i.id_usu = u.id_usuario where i.id_usu = @idCont) and c.e_grupo = 0", new SqlParameter("@idUser", idUser), new SqlParameter("@idCont", idCont)).FirstOrDefault();
+
+                return a;
+            }
+        }
+
+        public void AddMessageInBD(Messages mensagem){
             using (SignalRBDEntities db = new SignalRBDEntities())
             {
                 MENSAGENS men = new MENSAGENS
