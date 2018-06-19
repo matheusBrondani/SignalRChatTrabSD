@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SignalRBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CONTATOS">
+    <Key>
+      <PropertyRef Name="id_contatos" />
+    </Key>
+    <Property Name="id_contatos" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_usu" Type="int" />
+    <Property Name="id_cont" Type="int" />
+  </EntityType>
+  <EntityType Name="CONVERSAS">
+    <Key>
+      <PropertyRef Name="id_conversa" />
+    </Key>
+    <Property Name="id_conversa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nome" Type="varchar" MaxLength="50" />
+    <Property Name="e_grupo" Type="numeric" Precision="1" Scale="0" />
+  </EntityType>
+  <EntityType Name="INTEGRANTES">
+    <Key>
+      <PropertyRef Name="id_usu" />
+      <PropertyRef Name="id_conversa" />
+    </Key>
+    <Property Name="id_usu" Type="int" Nullable="false" />
+    <Property Name="id_conversa" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MENSAGENS">
+    <Key>
+      <PropertyRef Name="id_mensagens" />
+    </Key>
+    <Property Name="id_mensagens" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_sender" Type="int" />
+    <Property Name="id_conversa" Type="int" />
+    <Property Name="entregue" Type="numeric" Precision="1" Scale="0" />
+    <Property Name="lida" Type="numeric" Precision="1" Scale="0" />
+    <Property Name="mensagem" Type="varchar" MaxLength="300" />
+  </EntityType>
+  <EntityType Name="USUARIO">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="senha" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="nome" Type="varchar" MaxLength="100" />
+    <Property Name="nick" Type="varchar" MaxLength="20" />
+    <Property Name="id_conection" Type="varchar" MaxLength="50" />
+    <Property Name="online" Type="numeric" Precision="1" Scale="0" />
+  </EntityType>
+  <Association Name="FK_CONTATO_CONTATO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="CONTATOS" Type="Self.CONTATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="CONTATOS">
+        <PropertyRef Name="id_cont" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MENSAGEM_CONVERSA">
+    <End Role="CONVERSAS" Type="Self.CONVERSAS" Multiplicity="0..1" />
+    <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CONVERSAS">
+        <PropertyRef Name="id_conversa" />
+      </Principal>
+      <Dependent Role="MENSAGENS">
+        <PropertyRef Name="id_conversa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MENSAGEM_USU">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="MENSAGENS" Type="Self.MENSAGENS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="MENSAGENS">
+        <PropertyRef Name="id_sender" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USU_CONTATO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="CONTATOS" Type="Self.CONTATOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="CONTATOS">
+        <PropertyRef Name="id_usu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USU_CONVERSA">
+    <End Role="CONVERSAS" Type="Self.CONVERSAS" Multiplicity="1" />
+    <End Role="INTEGRANTES" Type="Self.INTEGRANTES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CONVERSAS">
+        <PropertyRef Name="id_conversa" />
+      </Principal>
+      <Dependent Role="INTEGRANTES">
+        <PropertyRef Name="id_conversa" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USU_INTEGRANTE">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="INTEGRANTES" Type="Self.INTEGRANTES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="id_usuario" />
+      </Principal>
+      <Dependent Role="INTEGRANTES">
+        <PropertyRef Name="id_usu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SignalRBDModelStoreContainer">
+    <EntitySet Name="CONTATOS" EntityType="Self.CONTATOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONVERSAS" EntityType="Self.CONVERSAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="INTEGRANTES" EntityType="Self.INTEGRANTES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MENSAGENS" EntityType="Self.MENSAGENS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_CONTATO_CONTATO" Association="Self.FK_CONTATO_CONTATO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="CONTATOS" EntitySet="CONTATOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MENSAGEM_CONVERSA" Association="Self.FK_MENSAGEM_CONVERSA">
+      <End Role="CONVERSAS" EntitySet="CONVERSAS" />
+      <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MENSAGEM_USU" Association="Self.FK_MENSAGEM_USU">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="MENSAGENS" EntitySet="MENSAGENS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USU_CONTATO" Association="Self.FK_USU_CONTATO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="CONTATOS" EntitySet="CONTATOS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USU_CONVERSA" Association="Self.FK_USU_CONVERSA">
+      <End Role="CONVERSAS" EntitySet="CONVERSAS" />
+      <End Role="INTEGRANTES" EntitySet="INTEGRANTES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USU_INTEGRANTE" Association="Self.FK_USU_INTEGRANTE">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="INTEGRANTES" EntitySet="INTEGRANTES" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

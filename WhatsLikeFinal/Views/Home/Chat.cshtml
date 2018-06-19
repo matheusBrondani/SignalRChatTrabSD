@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Bem-vindo "+ @ViewBag.User.UserName;
+}
+
+<div class="panel panel-default chatRoom">
+    <div class="panel-heading">Usuário : @ViewBag.User.UserName</div>
+    <div class="panel-body">
+        <div class="content">
+            <div id="divChatWindow" class="chatWindow">
+            </div>
+            <div id="divusers" class="users">
+            </div>
+        </div>
+        <div class="messageBar">
+            <input class="textbox" type="text" id="txtMessage" />
+            <input id="btnSendMsg" type="button" value="Send" class="submitButton" />
+        </div>
+    </div>
+</div>
+
+<div>
+    <label for="Email" class="sr-only">AddContato</label>
+    <input type="email" id="emailContato" name="emailContato" class="form-control" placeholder="Email Contato" required="">    
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="addCont">AddContato</button>
+</div>
+
+<input id="hdConnectionId" type="hidden"/>
+<input id="hdId" type="hidden" value="@ViewBag.User.IdUser" />
+<input id="hdUserName" type="hidden" value="@ViewBag.User.UserName"/>
+<input id="hdEmail" type="hidden" value="@ViewBag.User.Email" />
+
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/signalr/hubs"></script>  
+    <script src="~/Scripts/SignalRScript.js"></script>
+}

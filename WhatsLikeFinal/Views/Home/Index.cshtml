@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<form method="post" class="divSingIn">
+    <h1 class="h3 mb-3 font-weight-normal text-center">Chat Maneiro</h1>
+    <label for="Email" class="sr-only">Email</label>
+    <input type="email" id="Email" name="Email" class="form-control" placeholder="Email" required="" autofocus="">
+    <label for="Senha" class="sr-only">Senha</label>
+    <input type="password" id="Senha" name="Senha" class="form-control" placeholder="Senha" required="">
+    <div class=" mb-3">
+        <label>
+            <a href="@Url.Action("Cadastro", "Home")">Cadastrar</a>           
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginChat">Login</button>
+</form>

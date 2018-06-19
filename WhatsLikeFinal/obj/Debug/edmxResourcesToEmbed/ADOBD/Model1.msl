@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SignalRBDModelStoreContainer" CdmEntityContainer="SignalRBDEntities">
+    <EntitySetMapping Name="CONTATOS">
+      <EntityTypeMapping TypeName="SignalRBDModel.CONTATOS">
+        <MappingFragment StoreEntitySet="CONTATOS">
+          <ScalarProperty Name="id_contatos" ColumnName="id_contatos" />
+          <ScalarProperty Name="id_usu" ColumnName="id_usu" />
+          <ScalarProperty Name="id_cont" ColumnName="id_cont" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CONVERSAS">
+      <EntityTypeMapping TypeName="SignalRBDModel.CONVERSAS">
+        <MappingFragment StoreEntitySet="CONVERSAS">
+          <ScalarProperty Name="id_conversa" ColumnName="id_conversa" />
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="e_grupo" ColumnName="e_grupo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MENSAGENS">
+      <EntityTypeMapping TypeName="SignalRBDModel.MENSAGENS">
+        <MappingFragment StoreEntitySet="MENSAGENS">
+          <ScalarProperty Name="id_mensagens" ColumnName="id_mensagens" />
+          <ScalarProperty Name="id_sender" ColumnName="id_sender" />
+          <ScalarProperty Name="id_conversa" ColumnName="id_conversa" />
+          <ScalarProperty Name="entregue" ColumnName="entregue" />
+          <ScalarProperty Name="lida" ColumnName="lida" />
+          <ScalarProperty Name="mensagem" ColumnName="mensagem" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIO">
+      <EntityTypeMapping TypeName="SignalRBDModel.USUARIO">
+        <MappingFragment StoreEntitySet="USUARIO">
+          <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="senha" ColumnName="senha" />
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="nick" ColumnName="nick" />
+          <ScalarProperty Name="id_conection" ColumnName="id_conection" />
+          <ScalarProperty Name="online" ColumnName="online" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="INTEGRANTES" TypeName="SignalRBDModel.INTEGRANTES" StoreEntitySet="INTEGRANTES">
+      <EndProperty Name="CONVERSAS">
+        <ScalarProperty Name="id_conversa" ColumnName="id_conversa" />
+      </EndProperty>
+      <EndProperty Name="USUARIO">
+        <ScalarProperty Name="id_usuario" ColumnName="id_usu" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

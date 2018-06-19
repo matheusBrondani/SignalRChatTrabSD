@@ -1,0 +1,106 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: lightblue;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.divSingIn {
+    margin: auto;
+    width: 25%;
+    padding: 10px;
+}
+
+.submitButton {
+    background-color: #d7e5e4;
+    border: #5f9482 solid 1px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+    .submitButton:hover {
+        background-color: #e1e1e1;
+    }
+
+.chatRoom {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: purple;
+}
+
+    .chatRoom .content .chatWindow {
+        float: left;
+        width: 409px;
+        height: 300px;
+        overflow-y: scroll;
+    }
+
+        .chatRoom .content .chatWindow .message {
+            padding: 4px;
+        }
+
+            .chatRoom .content .chatWindow .message .userName {
+                font-weight: bold;
+            }
+
+    .chatRoom .content .users {
+        float: right;
+        width: 240px;
+        height: 300px;
+    }
+
+        .chatRoom .content .users .user {
+            display: block;
+            cursor: pointer;
+            padding: 4px;
+            background-color: #f9f9f9;
+            border-bottom: solid 1px #5f9482;
+        }
+
+        .chatRoom .content .users .loginUser {
+            display: block;
+            padding: 4px;
+            color: gray;
+            border-bottom: solid 1px #5f9482;
+        }
+
+        .chatRoom .content .users .user:hover {
+            background-color: #e1e1e1;
+        }
+
+    .chatRoom .messageBar {
+        border-top: solid 1px gray;
+        padding: 4px;
+    }
+
+        .chatRoom .messageBar .textbox {
+            width: 550px;
+        }
+
+.disconnect {
+    position: absolute;
+    margin: 10px;
+    background-color: #ffcbcb;
+    padding: 4px;
+    border: solid 1px red;
+}
